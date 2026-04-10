@@ -1,4 +1,4 @@
-export type UserRole = 'entrepreneur' | 'investor';
+export type UserRole = "entrepreneur" | "investor";
 
 export interface User {
   id: string;
@@ -12,7 +12,7 @@ export interface User {
 }
 
 export interface Entrepreneur extends User {
-  role: 'entrepreneur';
+  role: "entrepreneur";
   startupName: string;
   pitchSummary: string;
   fundingNeeded: string;
@@ -23,7 +23,7 @@ export interface Entrepreneur extends User {
 }
 
 export interface Investor extends User {
-  role: 'investor';
+  role: "investor";
   investmentInterests: string[];
   investmentStage: string[];
   portfolioCompanies: string[];
@@ -53,7 +53,7 @@ export interface CollaborationRequest {
   investorId: string;
   entrepreneurId: string;
   message: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: "pending" | "accepted" | "rejected";
   createdAt: string;
 }
 
@@ -66,12 +66,65 @@ export interface Document {
   shared: boolean;
   url: string;
   ownerId: string;
+  status?: "Draft" | "In Review" | "Signed";
+  previewType?: "pdf" | "doc" | "image";
+}
+
+export interface MeetingAvailability {
+  id: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  title: string;
+  status: "open" | "booked" | "blocked";
+  notes?: string;
+}
+
+export interface MeetingItem {
+  id: string;
+  date: string;
+  time: string;
+  title: string;
+  with: string;
+  role: UserRole;
+  status: "pending" | "confirmed" | "declined";
+  type: "availability" | "request" | "meeting";
+}
+
+export interface Transaction {
+  id: string;
+  type: "deposit" | "withdraw" | "transfer" | "funding";
+  amount: string;
+  sender: string;
+  receiver: string;
+  status: "completed" | "pending" | "failed";
+  timestamp: string;
+  note: string;
+}
+
+export interface WalletSummary {
+  balance: string;
+  available: string;
+  reserved: string;
+  currency: string;
+}
+
+export interface WalkthroughStep {
+  title: string;
+  description: string;
+  route: string;
+  accent: string;
 }
 
 export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
-  register: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
+  register: (
+    name: string,
+    email: string,
+    password: string,
+    role: UserRole,
+  ) => Promise<void>;
   logout: () => void;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
